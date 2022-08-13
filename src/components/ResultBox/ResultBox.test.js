@@ -10,6 +10,7 @@ import { formatAmountInCurrency } from './../../utils/formatAmountInCurrency';
 
     const testCasesMoreThanZero = [123, 333, 525, 100]
     const testCasesLessThanZero = [-100, -50, -222, -142]
+    const testCasesInvalid = ['9', undefined]
 
     it('should return proper output value for PLN to USD conversion', () => {
       for(const testAmount of testCasesMoreThanZero){
@@ -49,6 +50,15 @@ import { formatAmountInCurrency } from './../../utils/formatAmountInCurrency';
 
     it('should return proper info if value is less than zero', () => {
       for(const testAmount of testCasesLessThanZero){
+        render(<ResultBox from="USD" to="PLN" amount={testAmount} />);
+        const resultField = screen.getByTestId('result');
+        expect(resultField).toHaveTextContent('Wrong value')
+        cleanup()
+      }
+    })
+
+    it('should return "enter proper value" if value is invalid', () => {
+      for(const testAmount of testCasesInvalid){
         render(<ResultBox from="USD" to="PLN" amount={testAmount} />);
         const resultField = screen.getByTestId('result');
         expect(resultField).toHaveTextContent('Wrong value')
